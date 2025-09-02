@@ -16,7 +16,7 @@ public class BandService {
     }
 
     public List<Band> listBands() {
-        String sql = "SELECT * FROM banda";
+        String sql = "SELECT * FROM banda ORDER BY id";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Band(
                 rs.getInt("id"),
                 rs.getString("nome"),
