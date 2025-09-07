@@ -15,10 +15,17 @@ public class Response<T> {
     private boolean success = true;
     private String message;
     private T data;
-    private Object error;
+    private ResponseError error;
 
     @JsonIgnore
     private int httpCode = 200;
+
+    @Data
+    @AllArgsConstructor
+    public static class ResponseError {
+        private String code;
+        private String message;
+    }
 
 }
 

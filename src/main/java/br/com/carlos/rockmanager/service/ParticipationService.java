@@ -1,7 +1,7 @@
 package br.com.carlos.rockmanager.service;
 
 import br.com.carlos.rockmanager.model.Participation;
-import org.springframework.jdbc.core.JdbcTemplate;
+import br.com.carlos.rockmanager.repository.ParticipationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,20 +9,30 @@ import java.util.List;
 @Service
 public class ParticipationService {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final ParticipationRepository participationRepository;
 
-    public ParticipationService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ParticipationService(ParticipationRepository participationRepository) {
+        this.participationRepository = participationRepository;
     }
 
     public List<Participation> listParticipations() {
-        String sql = "SELECT * FROM participacao ORDER BY id_banda";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Participation(
-                rs.getInt("id_banda"),
-                rs.getInt("id_show"),
-                rs.getInt("ordem_apresentacao"),
-                rs.getInt("tempo_execucao_min")
-        ));
+        return participationRepository.findAll();
+    }
+
+    public List<Participation> getParticipationsByBandId(int bandId) {
+        return participationRepository.findAll().stream()
+                .filter(participation -> participation.getId_banda() == bandId)
+                .toList();
+    }
+
+    public Participation getParticipationById(int showId, int bandId) {
+        Participation.ParticipationId participationId = new Participation.ParticipationId();
+
+        participationId.setId_banda(bandId);
+        participationId.setId_show(showId);
+
+        return participationRepository.findById(participationId).orElse(null);
+
     }
 
 }

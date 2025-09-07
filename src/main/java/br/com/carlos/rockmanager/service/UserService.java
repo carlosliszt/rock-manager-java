@@ -1,31 +1,32 @@
 package br.com.carlos.rockmanager.service;
 
 import br.com.carlos.rockmanager.model.User;
-import org.springframework.jdbc.core.JdbcTemplate;
+import br.com.carlos.rockmanager.model.UserInfo;
+import br.com.carlos.rockmanager.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final UserRepository userRepository;
 
-    public UserService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public List<User> listUsers() {
-        String sql = "SELECT * FROM usuarios ORDER BY id";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(
-                rs.getInt("id"),
-                rs.getString("username"),
-                rs.getString("email"),
-                "", // sem retornar senha por motivo de segurança.
-                rs.getString("role"),
-                rs.getInt("ativo"),
-                rs.getString("criado_em")
-        ));
+    public List<UserInfo> listUsers() {
+        return userRepository.findAll().stream().map(user -> new UserInfo(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                "",
+                user.getRole(),
+                user.getAtivo(),
+                user.getCriado_em()
+        )).collect(Collectors.toList());
     }
 
 }

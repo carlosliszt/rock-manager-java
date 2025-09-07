@@ -1,7 +1,6 @@
 package br.com.carlos.rockmanager.controller;
 
-import br.com.carlos.rockmanager.model.Show;
-import br.com.carlos.rockmanager.model.User;
+import br.com.carlos.rockmanager.model.UserInfo;
 import br.com.carlos.rockmanager.service.UserService;
 import br.com.carlos.rockmanager.utils.Response;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<Response<Map<String, Object>>> listar() {
-        List<User> users = userService.listUsers();
+    public ResponseEntity<Response<Map<String, Object>>> index() {
+        List<UserInfo> users = userService.listUsers();
 
         Map<String, Object> data = new HashMap<>();
         data.put("usuarios", users);

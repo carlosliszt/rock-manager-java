@@ -1,7 +1,7 @@
 package br.com.carlos.rockmanager.service;
 
 import br.com.carlos.rockmanager.model.Band;
-import org.springframework.jdbc.core.JdbcTemplate;
+import br.com.carlos.rockmanager.repository.BandRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,21 +9,18 @@ import java.util.List;
 @Service
 public class BandService {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final BandRepository bandRepository;
 
-    public BandService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public BandService(BandRepository bandRepository) {
+        this.bandRepository = bandRepository;
     }
 
     public List<Band> listBands() {
-        String sql = "SELECT * FROM banda ORDER BY id";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Band(
-                rs.getInt("id"),
-                rs.getString("nome"),
-                rs.getString("pais_origem"),
-                rs.getInt("ano_formacao"),
-                rs.getString("genero")
-        ));
+        return bandRepository.findAll();
+    }
+
+    public Band getBandById(int id) {
+        return bandRepository.findById(id).orElse(null);
     }
 
 }
