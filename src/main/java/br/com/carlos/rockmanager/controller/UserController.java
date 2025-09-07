@@ -5,12 +5,14 @@ import br.com.carlos.rockmanager.service.UserService;
 import br.com.carlos.rockmanager.utils.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequestMapping("/users")
 @RestController
 public class UserController {
 
@@ -20,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<Response<Map<String, Object>>> index() {
         List<UserInfo> users = userService.listUsers();
 
